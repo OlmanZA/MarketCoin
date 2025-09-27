@@ -259,10 +259,7 @@ public class CoinDaoImp implements CoinDao {
         System.out.println("├─────────────────┼─────────┼──────────────────┤");
 
         for (Coin coin : coins) {
-            System.out.printf("│ %-15s │ %-7s │ %16.8f │%n",
-                    coin.getNombre(),
-                    coin.getSimbolo(),
-                    coin.getCantidad());
+            CoinHelper.mostrarMoneda(coin);
         }
 
         System.out.println("└─────────────────┴─────────┴──────────────────┘");
