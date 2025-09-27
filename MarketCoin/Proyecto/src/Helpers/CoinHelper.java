@@ -11,4 +11,12 @@ public class CoinHelper {
                 rs.getDouble("cantidad")
         );
     }
+
+    public static void mostrarMoneda(Coin coin) {
+        System.out.printf("│ %-15s │ %-7s │ %16.8f │%n",
+                coin.getNombre(),
+                coin.getSimbolo(),
+                coin.getCantidad());
+    }
+  
 }
