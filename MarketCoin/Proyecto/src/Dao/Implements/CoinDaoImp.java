@@ -2,6 +2,7 @@ package Dao.Implements;
 
 import Dao.CoinDao;
 import Entities.Coin;
+import Helpers.CoinHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -44,12 +45,7 @@ public class CoinDaoImp implements CoinDao {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                coins.add(new Coin(
-                        rs.getInt("id_moneda"),
-                        rs.getString("nombre"),
-                        rs.getString("simbolo"),
-                        rs.getDouble("cantidad")
-                ));
+                coins.add(CoinHelper.convertirResultSetAMoneda(rs));
             }
 
         } catch (SQLException e) {
@@ -72,12 +68,7 @@ public class CoinDaoImp implements CoinDao {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    coin = new Coin(
-                            rs.getInt("id_moneda"),
-                            rs.getString("nombre"),
-                            rs.getString("simbolo"),
-                            rs.getDouble("cantidad")
-                    );
+                    coin = CoinHelper.convertirResultSetAMoneda(rs);
                 }
             }
 
