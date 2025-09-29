@@ -339,4 +339,127 @@ public class WalletHelper {
             IO.imp("❌ Error al obtener billeteras: " + e.getMessage());
         }
     }
+
+    public static void transformarADinero(User usuario) {
+
+        // --- CONSTANTES DE CONVERSIÓN Y PRECIOS ---
+        final double TASA_USD_COP = 4000.00;
+        final double PRECIO_BTC_USD = 65000.00;
+        final double PRECIO_ETH_USD = 3500.00;
+        final double PRECIO_USDT_USD = 1.00;
+        final double PRECIO_BNB_USD = 550.00;
+        final double PRECIO_SOL_USD = 150.00;
+        final double PRECIO_ADA_USD = 0.40;
+
+
+        java.util.function.Function<String, Double> getPrecioSimuladoUSD = (simbolo) -> {
+            return switch (simbolo.toUpperCase()) {
+                case "BTC" -> PRECIO_BTC_USD;
+                case "ETH" -> PRECIO_ETH_USD;
+                case "USDT" -> PRECIO_USDT_USD;
+                case "BNB" -> PRECIO_BNB_USD;
+                case "SOL" -> PRECIO_SOL_USD;
+                case "ADA" -> PRECIO_ADA_USD;
+                default -> 0.0;
+            };
+        };
+
+
+        WalletDaoImp walletDao = new WalletDaoImp();
+
+        //Obtener la billetera y saldos
+        Optional<Wallet> billeteraOpt = walletDao.findByUserCedula(usuario.getCedula());
+        if (billeteraOpt.isEmpty()) {
+            IO.imp("❌ No se encontró una billetera. Por favor, cree una.");
+            return;
+        }
+
+        Wallet billetera = billeteraOpt.get();
+        List<CoinWallet> saldos = walletDao.getCoinsByWallet(billetera.getNumeroBilletera());
+
+        // Filtrar solo monedas con saldo > 0
+        List<CoinWallet> saldosValidos = saldos.stream()
+                .filter(cw -> cw.getCantidad().doubleValue() > 0.0)
+                .filter(cw -> getPrecioSimuladoUSD.apply(cw.getSimbolo()) > 0.0)
+                .toList();
+
+        if (saldosValidos.isEmpty()) {
+            IO.imp("❌ La billetera está vacía o no contiene monedas con precio conocido para transformar.");
+            return;
+        }
+
+
+
+        IO.imp("\n=== SELECCIÓN DE MONEDA PARA CONVERSIÓN A COP ===");
+
+        Map<Integer, CoinWallet> opcionesMonedas = new HashMap<>();
+        int index = 1;
+
+        // Mostrar monedas disponibles para selección individual
+        for (CoinWallet cw : saldosValidos) {
+            IO.imp(String.format("%d. %s (%s) - Saldo: %.8f",
+                    index, cw.getNombre(), cw.getSimbolo(), cw.getCantidad().doubleValue()));
+            opcionesMonedas.put(index, cw);
+            index++;
+        }
+
+        // Opción para ver el total
+        final int OPCION_TODAS = index;
+        IO.imp(String.format("%d. Convertir TODAS las monedas", OPCION_TODAS));
+        IO.imp("----------------------------------------------");
+
+        int opcion = IO.leaInt("Elija el número de la moneda o elija 'TODAS': ");
+        CoinWallet monedaSeleccionada = opcionesMonedas.get(opcion);
+
+
+
+        if (opcion == OPCION_TODAS) {
+
+            // calculo total
+
+            double valorTotalCOP = 0.0;
+
+            IO.imp("\n=== VALORACIÓN DE TODAS LAS MONEDAS EN COP ===");
+            IO.imp(String.format("Tasa de Conversión: 1 USD = $%,.2f COP", TASA_USD_COP));
+            IO.imp("-----------------------------------------------------");
+
+            for (CoinWallet cw : saldosValidos) {
+                double cantidad = cw.getCantidad().doubleValue();
+                double precioUSD = getPrecioSimuladoUSD.apply(cw.getSimbolo());
+
+                double valorCOP = (cantidad * precioUSD) * TASA_USD_COP;
+                valorTotalCOP += valorCOP;
+
+                IO.imp(String.format("%s (%s): $%,.0f COP",
+                        cw.getNombre(), cw.getSimbolo(), valorCOP));
+            }
+
+            IO.imp("-----------------------------------------------------");
+            IO.imp(String.format("💰 VALOR TOTAL ESTIMADO DEL PORTAFOLIO: $%,.0f COP", valorTotalCOP));
+
+        } else if (monedaSeleccionada != null) {
+
+            // calculo individual
+
+            String simbolo = monedaSeleccionada.getSimbolo();
+            double cantidad = monedaSeleccionada.getCantidad().doubleValue();
+            double precioUSD = getPrecioSimuladoUSD.apply(simbolo);
+
+            double valorUSD = cantidad * precioUSD;
+            double valorCOP = valorUSD * TASA_USD_COP;
+
+            IO.imp("\n=== CONVERSIÓN INDIVIDUAL A COP ===");
+            IO.imp(String.format("Moneda: %s (%s)", monedaSeleccionada.getNombre(), simbolo));
+            IO.imp(String.format("Saldo: %.8f", cantidad));
+            IO.imp(String.format("Precio (USD): $%,.2f", precioUSD));
+            IO.imp(String.format("Tasa (COP): $%,.2f", TASA_USD_COP));
+            IO.imp("-------------------------------------");
+            IO.imp(String.format("Valor Total en USD: $%,.2f USD", valorUSD));
+            IO.imp(String.format("Valor Total en COP: $%,.0f COP", valorCOP));
+            IO.imp("-------------------------------------");
+
+        } else {
+            IO.imp("⚠️ Opción no válida. Volviendo al meú.");
+        }
+    }
 }
