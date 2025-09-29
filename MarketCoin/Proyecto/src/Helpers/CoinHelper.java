@@ -37,4 +37,25 @@ public class CoinHelper {
             mostrarMoneda(coin);
         }
     }
+
+    public static void verMonedasPorSimbolo() {
+
+        CoinDaoImp Co  = new CoinDaoImp();
+
+        // Obtener todas las monedas
+        List<Coin> monedas = Co.findAll();
+
+        if (monedas.isEmpty()) {
+            IO.imp("❌ No hay criptomonedas registradas en el catálogo.");
+            return;
+        }
+
+        IO.imp("\n=== CATÁLOGO DE MONEDAS POR SÍMBOLO ===");
+        IO.imp("-----------------------------------------");
+        for (Coin m : monedas) {
+            IO.imp(String.format("ID: %-3d | Nombre: %-15s | Símbolo: %s",
+                    m.getIdMoneda(), m.getNombre(), m.getSimbolo()));
+        }
+        IO.imp("-----------------------------------------");
+    }
 }
