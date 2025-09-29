@@ -53,6 +53,8 @@ public class Menu {
                     case 2 -> WalletHelper.depositar(usuario);
                     case 3 -> WalletHelper.retirar(usuario);
                     case 4 -> WalletHelper.verBilletera(usuario);
+                    case 5 -> CoinHelper.verMonedasPorSimbolo();
+                    case 6 -> WalletHelper.transformarADinero(usuario);
                     case 9 -> {
                         loginUser.cerrarSesion();
                         logedIn = false;
