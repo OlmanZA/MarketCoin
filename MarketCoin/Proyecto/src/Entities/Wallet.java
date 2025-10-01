@@ -1,40 +1,47 @@
 package Entities;
 
 public class Wallet {
-    private String walletNumber;
-    private long userCedula;
-    private String WalletName;
+    private String numeroBilletera;
+    private long cedulaUsuario;
+    private String nombreBilletera;  // Este campo debe existir
 
-    public Wallet(String walletNumber, long userCedula,String WalletName) {
-        this.walletNumber = walletNumber;
-        this.userCedula = userCedula;
-        this.WalletName = WalletName;
+    public Wallet(String numeroBilletera, long cedulaUsuario, String nombreBilletera) {
+        this.numeroBilletera = numeroBilletera;
+        this.cedulaUsuario = cedulaUsuario;
+        this.nombreBilletera = nombreBilletera;
     }
 
-
-    public String getWalletName() {
-        return WalletName;
+    // Getters y Setters
+    public String getNumeroBilletera() {
+        return numeroBilletera;
     }
 
-    public void setWalletName(String walletName) {
-        WalletName = walletName;
+    public void setNumeroBilletera(String numeroBilletera) {
+        this.numeroBilletera = numeroBilletera;
     }
 
-    public long getUserCedula() {
-        return userCedula;
+    public long getCedulaUsuario() {
+        return cedulaUsuario;
     }
 
-    public void setUserCedula(long userCedula) {
-        this.userCedula = userCedula;
+    public void setCedulaUsuario(long cedulaUsuario) {
+        this.cedulaUsuario = cedulaUsuario;
     }
 
-    public void setWalletNumber(String walletNumber) {
-        this.walletNumber = walletNumber;
+    public String getNombreBilletera() {
+        return nombreBilletera;
     }
 
-
-    public String getWalletNumber() {
-        return walletNumber;
+    public void setNombreBilletera(String nombreBilletera) {
+        this.nombreBilletera = nombreBilletera;
     }
 
+    @Override
+    public String toString() {
+        return "Wallet{" +
+                "numeroBilletera='" + numeroBilletera + '\'' +
+                ", cedulaUsuario=" + cedulaUsuario +
+                ", nombreBilletera='" + nombreBilletera + '\'' +
+                '}';
+    }
 }
