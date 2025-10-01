@@ -1,5 +1,10 @@
 package Helpers;
 
+import Entities.Coin;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class CoinHelper {
 
   // Conviertir un ResultSet en un objeto Moneda
