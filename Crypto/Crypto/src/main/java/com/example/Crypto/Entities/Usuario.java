@@ -11,10 +11,14 @@ import lombok.*;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cedula;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
 
     private String nombre;
     private String correo;
     private String contraseña;
+    private String fecha_nac;
+    private String pais_nacimiento;
+
 }
