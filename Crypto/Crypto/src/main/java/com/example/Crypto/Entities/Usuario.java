@@ -12,8 +12,6 @@ public class Usuario {
 
     @Id
     private Long cedula;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-
 
     private String nombre;
     private String correo;
