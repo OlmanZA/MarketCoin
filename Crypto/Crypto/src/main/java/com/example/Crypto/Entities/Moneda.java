@@ -23,9 +23,4 @@ public class Moneda {
 
     @Column(nullable = false, unique = true, length = 10)
     private String simbolo;
-
-    private Float cantidad;
-
-    @OneToMany(mappedBy = "moneda", cascade = CascadeType.ALL)
-    private List<Billetera_Moneda> billeteras;
 }
