@@ -8,7 +8,7 @@ import java.util.Optional;
 @Repository
 public interface Billetera_Moneda_Repositorio extends JpaRepository<Billetera_Moneda, Long> {
 
-    boolean existsByBilleteraNumeroBilleteraAndMonedaIdMoneda(Long numeroBilletera, Long idMoneda);
+    boolean existsByBilleteraNumeroBilleteraAndMonedaIdMoneda(Long numero_billetera, Long idMoneda);
 
-    Optional<Billetera_Moneda> findByBilleteraNumeroBilleteraAndMonedaIdMoneda(Long numeroBilletera, Long idMoneda);
+    Optional<Billetera_Moneda> findByBilleteraNumeroBilleteraAndMonedaIdMoneda(Long numero_billetera, Long idMoneda);
 }

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "billetera_moneda", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"numero_billetera", "id_moneda"})
+        @UniqueConstraint(columnNames = {"numeroBilletera", "id_moneda"})
 })
 public class Billetera_Moneda {
 
@@ -21,7 +21,7 @@ public class Billetera_Moneda {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "numero_billetera", nullable = false)
+    @JoinColumn(name = "numeroBilletera", nullable = false)
     private Billetera billetera;
 
     @ManyToOne

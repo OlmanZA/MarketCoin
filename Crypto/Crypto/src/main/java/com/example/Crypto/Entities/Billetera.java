@@ -17,7 +17,7 @@ public class Billetera {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long  numero_billetera;
+    private long  numeroBilletera;
     private String nombre;
 
     @ManyToOne
