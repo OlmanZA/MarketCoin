@@ -1,7 +1,7 @@
 package com.example.Crypto.Controller;
 
-import com.example.Crypto.Entities.Billetera_Moneda;
-import com.example.Crypto.Service.Billetera_MonedaService;
+import com.example.Crypto.Entities.BilleteraMoneda;
+import com.example.Crypto.Service.BilleteraMonedaService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -9,24 +9,24 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/billetera-moneda")
-public class Billetera_MonedaController {
+public class BilleteraMonedaController {
 
-    private final Billetera_MonedaService service;
+    private final BilleteraMonedaService service;
 
     // Constructor con inyección de dependencia
-    public Billetera_MonedaController(Billetera_MonedaService service) {
+    public BilleteraMonedaController(BilleteraMonedaService service) {
         this.service = service;
     }
 
     // Endpoint para crear una nueva Billetera_Moneda
     @PostMapping("/crearBilleteraMoneda")
-    public Billetera_Moneda crear(@RequestBody Billetera_Moneda billeteraMoneda) {
+    public BilleteraMoneda crear(@RequestBody BilleteraMoneda billeteraMoneda) {
         return service.crearBilleteraMoneda(billeteraMoneda);
     }
 
     // Endpoint para obtener una Billetera_Moneda específica por IDs
     @GetMapping("/obtener")
-    public Optional<Billetera_Moneda> obtener(
+    public Optional<BilleteraMoneda> obtener(
             @RequestParam Long billeteraId,
             @RequestParam Long monedaId
     ) {
@@ -35,12 +35,12 @@ public class Billetera_MonedaController {
 
     // Endpoint para listar todas las Billeteras_Monedas
     @GetMapping("/listar")
-    public List<Billetera_Moneda> listar() {
+    public List<BilleteraMoneda> listar() {
         return service.listarBilleterasMonedas();
     }
 
     @PostMapping("/depositar")
-    public Billetera_Moneda depositar(
+    public BilleteraMoneda depositar(
             @RequestParam Long billeteraId,
             @RequestParam Long monedaId,
             @RequestParam double monto) {
@@ -48,7 +48,7 @@ public class Billetera_MonedaController {
     }
 
     @PostMapping("/retirar")
-    public Billetera_Moneda retirar(
+    public BilleteraMoneda retirar(
             @RequestParam Long billeteraId,
             @RequestParam Long monedaId,
             @RequestParam double monto) {

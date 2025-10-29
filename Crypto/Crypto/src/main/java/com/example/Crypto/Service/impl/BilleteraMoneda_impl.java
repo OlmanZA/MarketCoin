@@ -1,8 +1,8 @@
 package com.example.Crypto.Service.impl;
 
-import com.example.Crypto.Entities.Billetera_Moneda;
-import com.example.Crypto.Repository.Billetera_Moneda_Repositorio;
-import com.example.Crypto.Service.Billetera_MonedaService;
+import com.example.Crypto.Entities.BilleteraMoneda;
+import com.example.Crypto.Repository.BilleteraMoneda_Repositorio;
+import com.example.Crypto.Service.BilleteraMonedaService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -11,32 +11,32 @@ import java.util.Optional;
 
 @Service
 
-public class Billetera_Moneda_impl implements Billetera_MonedaService {
+public class BilleteraMoneda_impl implements BilleteraMonedaService {
 
-    private final Billetera_Moneda_Repositorio repository;
+    private final BilleteraMoneda_Repositorio repository;
 
-    public Billetera_Moneda_impl(Billetera_Moneda_Repositorio repository) {
+    public BilleteraMoneda_impl(BilleteraMoneda_Repositorio repository) {
         this.repository = repository;
     }
 
     @Override
-    public Billetera_Moneda crearBilleteraMoneda(Billetera_Moneda billeteraMoneda) {
+    public BilleteraMoneda crearBilleteraMoneda(BilleteraMoneda billeteraMoneda) {
         return repository.save(billeteraMoneda);
     }
 
     @Override
-    public Optional<Billetera_Moneda> obtenerBilleteraMoneda(Long billeteraId, Long monedaId) {
+    public Optional<BilleteraMoneda> obtenerBilleteraMoneda(Long billeteraId, Long monedaId) {
         return repository.findByBilleteraNumeroBilleteraAndMonedaIdMoneda(billeteraId, monedaId);
     }
 
     @Override
-    public List<Billetera_Moneda> listarBilleterasMonedas() {
+    public List<BilleteraMoneda> listarBilleterasMonedas() {
         return repository.findAll();
     }
 
     @Override
-    public Billetera_Moneda depositar(Long billeteraId, Long monedaId, double monto) {
-        Billetera_Moneda bm = repository.findByBilleteraNumeroBilleteraAndMonedaIdMoneda(billeteraId, monedaId)
+    public BilleteraMoneda depositar(Long billeteraId, Long monedaId, double monto) {
+        BilleteraMoneda bm = repository.findByBilleteraNumeroBilleteraAndMonedaIdMoneda(billeteraId, monedaId)
                 .orElseThrow(() -> new RuntimeException("Billetera-Moneda no encontrada"));
 
         // Convertir double a BigDecimal y sumar al saldo actual
@@ -47,10 +47,10 @@ public class Billetera_Moneda_impl implements Billetera_MonedaService {
     }
 
     @Override
-    public Billetera_Moneda retirar(Long billeteraId, Long monedaId, double monto) {
-        Optional<Billetera_Moneda> optional = repository.findByBilleteraNumeroBilleteraAndMonedaIdMoneda(billeteraId, monedaId);
+    public BilleteraMoneda retirar(Long billeteraId, Long monedaId, double monto) {
+        Optional<BilleteraMoneda> optional = repository.findByBilleteraNumeroBilleteraAndMonedaIdMoneda(billeteraId, monedaId);
         if (optional.isPresent()) {
-            Billetera_Moneda bm = optional.get();
+            BilleteraMoneda bm = optional.get();
             BigDecimal cantidadARetirar = BigDecimal.valueOf(monto);
 
             if (bm.getCantidad().compareTo(cantidadARetirar) < 0) {

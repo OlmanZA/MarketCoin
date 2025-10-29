@@ -14,14 +14,14 @@ import java.math.BigDecimal;
 @Table(name = "billetera_moneda", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"numeroBilletera", "id_moneda"})
 })
-public class Billetera_Moneda {
+public class BilleteraMoneda {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "numeroBilletera", nullable = false)
+    @JoinColumn(name = "numero_Billetera", nullable = false)
     private Billetera billetera;
 
     @ManyToOne

@@ -25,7 +25,7 @@ public class Billetera {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "billetera", cascade = CascadeType.ALL)
-    private List<Billetera_Moneda> billeteraMonedas;
+    private List<BilleteraMoneda> billeteraMonedas;
 
 }
 
