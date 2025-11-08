@@ -1,6 +1,7 @@
 package com.example.Crypto.Controller;
 
 
+import com.example.Crypto.Dtos.LoginResponse;
 import com.example.Crypto.Entities.Usuario;
 import com.example.Crypto.Service.UsuarioService;
 import org.slf4j.Logger;
@@ -30,25 +31,23 @@ public class UsuarioController {
     }
 
     @PostMapping("/IniciarSesion")
-    public ResponseEntity<?> iniciarSesion(@RequestBody Usuario credenciales) {
+    public ResponseEntity<LoginResponse> iniciarSesion(@RequestBody Usuario credenciales) {
         Optional<Usuario> usuario = usuarioService.iniciarSesion(
                 credenciales.getCorreo(),
                 credenciales.getContraseña()
         );
 
         if (usuario.isPresent()) {
-            // Crear respuesta con información del usuario (sin contraseña)
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("message", "Inicio de sesión exitoso");
-            response.put("usuario", Map.of(
-                    "cedula", usuario.get().getCedula(),
-                    "nombre", usuario.get().getNombre(),
-                    "correo", usuario.get().getCorreo()
-            ));
-            return ResponseEntity.ok(response);
+            Usuario u = usuario.get();
+            u.setContraseña(null); // no devolvemos contraseñas
+
+            return ResponseEntity.ok(
+                    new LoginResponse(true, "Inicio de sesión exitoso", u)
+            );
         } else {
-            return ResponseEntity.status(401).body("Credenciales incorrectas");
+            return ResponseEntity.status(401)
+                    .body(new LoginResponse(false, "Credenciales incorrectas", null));
         }
     }
+
 }
