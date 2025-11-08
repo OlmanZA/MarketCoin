@@ -1,0 +1,10 @@
+openapi: 3.0.0
+info:
+  title: Proyecto
+  description: ""
+  version: "1.0"
+servers:
+- url: https://virtserver.swaggerhub.com/itm-97e/Cryptos/1.0
+  description: SwaggerHub API Auto Mocking
+paths: {}
+components: {}
